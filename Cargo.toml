@@ -1,0 +1,21 @@
+[package]
+name = "rs_infras"
+version = "0.1.0"
+edition = "2021"
+authors = ["daheige"]
+description = "rust infras"
+keywords = ["rust", "infras", "rs-infras", "library","business-logic"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/rs-god/rs-infras"
+documentation = "https://docs.rs/rs-infras/"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+redis = { version ="0.22.1",features = ["r2d2","cluster"]}
+r2d2 = "0.8.10"
+sqlx = { version = "0.5", features = [ "runtime-tokio-rustls" , "mysql","chrono"] }
+tokio = { version = "1", features = ["full"] }
+futures = "0.3.19"
+chrono = "0.4"
