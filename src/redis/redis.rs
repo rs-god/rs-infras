@@ -74,19 +74,26 @@ impl<'a> RedisConf<'a> {
         self
     }
 
-    pub fn init_pool(&self) -> Pool<redis::Client> {
+    // create redis client
+    pub fn client(&self) -> redis::RedisResult<redis::Client> {
         if self.dsn.is_empty() {
-            panic!("redis dsn is empty");
+            Err(redis::RedisError::from((
+                redis::ErrorKind::InvalidClientConfig,
+                "redis dsn is empty",
+            )))
+        } else {
+            let client = redis::Client::open(self.dsn);
+            client
         }
-
-        let client = redis::Client::open(self.dsn).unwrap();
-        let pool = self.set_pool(client);
-        pool
     }
 
-    pub fn init_cluster_pool(&self) -> Pool<ClusterClient> {
+    // create redis cluster client
+    pub fn cluster_client(&self) -> redis::RedisResult<ClusterClient> {
         if self.cluster_nodes.is_empty() {
-            panic!("cluster nodes is empty");
+            return Err(redis::RedisError::from((
+                redis::ErrorKind::InvalidClientConfig,
+                "redis cluster nodes is empty",
+            )));
         }
 
         let mut nodes = Vec::new();
@@ -94,7 +101,22 @@ impl<'a> RedisConf<'a> {
             nodes.push(node.as_ref())
         }
 
-        let client = ClusterClient::new(nodes).unwrap();
+        let client = ClusterClient::new(nodes);
+        client
+    }
+
+    // redis client pool
+    pub fn init_pool(&self) -> Pool<redis::Client> {
+        let client = self.client().expect("create redis client failed");
+        let pool = self.set_pool(client);
+        pool
+    }
+
+    // redis cluster pool
+    pub fn init_cluster_pool(&self) -> Pool<ClusterClient> {
+        let client = self
+            .cluster_client()
+            .expect("create redis cluster client failed");
         let pool = self.set_pool(client);
         pool
     }
@@ -109,7 +131,7 @@ impl<'a> RedisConf<'a> {
             .min_idle(Some(self.min_idle))
             .connection_timeout(self.connection_timeout)
             .build(client)
-            .unwrap();
+            .expect("init redis pool failed");
         pool
     }
 }
@@ -157,5 +179,49 @@ mod tests {
         } else {
             println!("set success");
         }
+    }
+
+    // test redis async operation
+    /*
+    % redis-cli
+    127.0.0.1:6379> get name
+    "hello"
+    127.0.0.1:6379> get name2
+    "world"
+    127.0.0.1:6379> get key2
+    "abc"
+    */
+    #[tokio::test]
+    async fn test_redis_async() -> redis::RedisResult<()> {
+        use redis::AsyncCommands;
+
+        let dsn = "redis://:@127.0.0.1:6379/0";
+        let client = RedisConf::builder().with_dsn(dsn).client().unwrap();
+        let mut con = client.get_async_connection().await?;
+        con.set("name", "hello").await?;
+        con.set("name2", "world").await?;
+
+        // get name
+        let name: redis::RedisResult<String> = con.get("name").await;
+        println!("name:{}", name.unwrap());
+
+        // multi get
+        let res: redis::RedisResult<Vec<String>> = con.mget(&["name", "name2"]).await;
+        println!("res:{:?}", res.unwrap());
+
+        // async cmd mget
+        let res2: redis::RedisResult<Vec<String>> = redis::cmd("mget")
+            .arg(&["name", "name2"])
+            .query_async(&mut con)
+            .await;
+        println!("res2:{:?}", res2.unwrap());
+
+        // async cmd set
+        redis::cmd("set")
+            .arg(&["key2", "abc"])
+            .query_async(&mut con)
+            .await?;
+
+        Ok(())
     }
 }
