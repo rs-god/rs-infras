@@ -1,5 +1,6 @@
 pub mod mysql;
 pub mod redis;
+pub mod rpulsar;
 
 #[cfg(test)]
 mod tests {
