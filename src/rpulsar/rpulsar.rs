@@ -62,7 +62,7 @@ impl<'a> PulsarConf<'a> {
 // 定义message消息格式
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Message {
-    data: String,
+    pub data: String,
 }
 
 impl SerializeMessage for Message {
