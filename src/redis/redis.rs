@@ -2,6 +2,25 @@ use r2d2::Pool;
 use redis::{self, cluster::ClusterClient};
 use std::time::Duration;
 
+/*
+The &'a str mode is recommended so that with_dsn can pass &str as an argument
+Distinguishing between &str and String applications can be a bit confusing for programmers
+new to Rust.
+optimal the idea is to use apis with type &str whenever possible, because when a string has
+already been allocated somewhere, you only need to reference the word
+The string saves the cost of copying and distributing. Passing &str through a program is
+almost cost-free: it is almost never generated
+Allocating costs and not copying memory.
+Internally, &String is automatically cast to &str because String implements the type mandatory
+feature Deref for type str, which ensures that
+The conversion from &String to &str.
+String slicing is a versatile input parameter,
+This applies not only to actual String slicing references, but also to string references.
+So again: If you need to pass a string to your function, use string slice &str
+A String design is also possible.
+But that would pass ownership of the dsn String to the dsn, or it would be copying cost
+if the dsn argument called clone to copy a string.
+ */
 // 推荐使用&'a str方式，这样with_dsn就可以传递&str作为参数
 // 对刚接触 Rust 的程序员来说，辨别&str 和 String 的应用场景会存在一些困惑。最佳的
 // 做法是尽可能使用带有&str 类型的 API，因为当字符串已经分配到某处时，只需引用该字

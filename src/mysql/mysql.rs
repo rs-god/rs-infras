@@ -2,16 +2,17 @@ use sqlx;
 use sqlx::mysql::MySqlPoolOptions;
 use std::time::Duration;
 
-// mysql 配置信息
+// mysql config for mysql
 #[derive(Default, Debug)]
 pub struct MysqlConf<'a> {
-    // 结构体中包含引用类型的字段，如果编译器无法推断生命周期，需要手动标注
-    dsn: &'a str,              // dsn &str 引用类型
-    max_connections: u32,      // 最大连接数，默认100个
-    min_connections: u32,      // 最小连接数，默认10个
-    max_lifetime: Duration,    // 最大生命周期，默认1800s
-    idle_timeout: Duration,    // 空闲连接的生命周期，默认600s
-    connect_timeout: Duration, // 连接超时,默认10s
+    dsn: &'a str,           // dsn &str
+    max_connections: u32,   // Maximum number of connections. The default value is 100
+    min_connections: u32,   // Minimum number of connections. 10 by default
+    max_lifetime: Duration, // Maximum life cycle, default 1800s
+
+    // Life cycle of the idle connection. The default value is 600 seconds
+    idle_timeout: Duration,
+    connect_timeout: Duration, // The connection times out. The default value is 10 seconds
 }
 
 impl<'a> MysqlConf<'a> {
