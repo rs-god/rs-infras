@@ -63,7 +63,7 @@ impl<'a> MysqlConf<'a> {
             .min_connections(self.min_connections) // 最小连接数
             .max_lifetime(self.max_lifetime) // 最大生命周期
             .idle_timeout(self.idle_timeout) // 空闲连接的生命周期
-            .connect_timeout(self.connect_timeout) // 连接超时
+            .acquire_timeout(self.connect_timeout) // 连接超时
             .connect(&self.dsn)
             .await?;
         Ok(pool)

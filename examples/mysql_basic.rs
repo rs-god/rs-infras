@@ -25,7 +25,7 @@ async fn main() -> Result<(), sqlx::Error> {
     println!("res: {}", row.0);
     assert_eq!(row.0, 120);
 
-    // 1、使用fetch，获取cursor游标，自己处理row
+    // 使用fetch，获取cursor游标，自己处理row
     let sql = "select * from student where id >= ?";
     let mut rows = sqlx::query(sql).bind(1).fetch(&pool);
     while let Some(row) = rows.try_next().await? {
