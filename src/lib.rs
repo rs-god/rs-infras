@@ -1,7 +1,7 @@
 pub mod config;
-pub mod mysql;
-pub mod redis;
-pub mod rpulsar;
+pub mod xmysql;
+pub mod xpulsar;
+pub mod xredis;
 
 #[cfg(test)]
 mod tests {

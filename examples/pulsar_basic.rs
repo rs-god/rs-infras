@@ -2,8 +2,8 @@ use futures::TryStreamExt;
 use pulsar::{
     message::proto::command_subscribe::SubType, producer, proto, Consumer, Error as PulsarError,
 };
-use rs_infras::rpulsar;
-use rs_infras::rpulsar::Message;
+use rs_infras::xpulsar;
+use rs_infras::xpulsar::Message;
 
 #[tokio::main]
 async fn main() -> Result<(), PulsarError> {
@@ -11,8 +11,13 @@ async fn main() -> Result<(), PulsarError> {
     // message_consumer().await
 }
 
+#[tokio::test]
+async fn main() -> Result<(), PulsarError> {
+    message_consumer().await
+}
+
 async fn message_publish() -> Result<(), PulsarError> {
-    let p = rpulsar::PulsarConf::new("pulsar://127.0.0.1:6650");
+    let p = xpulsar::PulsarConf::new("pulsar://127.0.0.1:6650");
     let builder = p.pulsar_builder();
     let pulsar_obj = p
         .pulsar_obj(builder)
@@ -65,7 +70,7 @@ async fn message_publish() -> Result<(), PulsarError> {
 
 async fn message_consumer() -> Result<(), PulsarError> {
     // 通过build的方式创建pulsar object
-    let p = rpulsar::PulsarConf::new("pulsar://127.0.0.1:6650");
+    let p = xpulsar::PulsarConf::new("pulsar://127.0.0.1:6650");
     let builder = p.pulsar_builder();
     let pulsar_obj = p
         .pulsar_obj(builder)

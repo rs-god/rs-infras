@@ -1,6 +1,6 @@
 use redis::Commands;
 use redis::RedisResult;
-use rs_infras::redis::RedisConf;
+use rs_infras::xredis::RedisConf;
 
 fn main() {
     let dsn = "redis://:@127.0.0.1:6379/0";

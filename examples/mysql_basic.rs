@@ -1,6 +1,6 @@
 use chrono::prelude::*;
 use futures::TryStreamExt;
-use rs_infras::mysql::MysqlConf;
+use rs_infras::xmysql::MysqlConf;
 use sqlx::Row;
 
 #[derive(Debug, sqlx::FromRow)]
