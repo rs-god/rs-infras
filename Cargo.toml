@@ -13,13 +13,13 @@ documentation = "https://docs.rs/rs-infras/"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# tokio-comp async support
-redis = { version ="0.23.1",features = ["r2d2","tokio-comp","cluster","json"]}
+# tokio-comp for tokio async support
+redis = { version ="0.23.1",features = ["r2d2","tokio-comp","cluster","cluster-async","json"]}
 r2d2 = "0.8.10"
 sqlx = { version = "0.7.1", features = [ "runtime-tokio-rustls" , "mysql","chrono"] }
-tokio = { version = "1.28.0", features = ["full"] }
+tokio = { version = "1.30.0", features = ["full"] }
 futures = "0.3.28"
-chrono = "0.4.24"
+chrono = "0.4.26"
 
 # pulsar
 pulsar = "6.0.1"
