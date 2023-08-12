@@ -1,6 +1,6 @@
 [package]
 name = "rs_infras"
-version = "0.1.7"
+version = "0.2.0"
 edition = "2021"
 authors = ["daheige"]
 description = "rust infras"
