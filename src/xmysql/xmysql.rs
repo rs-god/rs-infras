@@ -71,6 +71,7 @@ impl<'a> MysqlConf<'a> {
 }
 
 /*
+use test;
 CREATE TABLE `student` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -79,6 +80,7 @@ CREATE TABLE `student` (
   `last_update` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+insert into student (name,age,id_card,last_update) values("daheige",33,"abc","2023-01-01");
  */
 #[cfg(test)]
 mod tests {

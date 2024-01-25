@@ -19,7 +19,7 @@ fn main() {
 
 // async exec redis operation
 #[tokio::test]
-async fn redis_async_test() -> redis::RedisResult<()> {
+async fn redis_async_test() -> RedisResult<()> {
     // you must use this module for async exec.
     use redis::AsyncCommands;
     let dsn = "redis://:@127.0.0.1:6379/0";

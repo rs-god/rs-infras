@@ -1,6 +1,6 @@
 [package]
 name = "rs_infras"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 authors = ["daheige"]
 description = "rust infras"
@@ -14,17 +14,17 @@ documentation = "https://docs.rs/rs-infras/"
 
 [dependencies]
 # tokio-comp for tokio async support
-redis = { version ="0.23.1",features = ["r2d2","tokio-comp","cluster","cluster-async","json"]}
+redis = { version ="0.24.0",features = ["r2d2","tokio-comp","cluster","cluster-async","json"]}
 r2d2 = "0.8.10"
-sqlx = { version = "0.7.1", features = [ "runtime-tokio-rustls" , "mysql","chrono"] }
-tokio = { version = "1.30.0", features = ["full"] }
-futures = "0.3.28"
-chrono = "0.4.26"
+sqlx = { version = "0.7.3", features = [ "runtime-tokio-rustls" , "mysql","chrono"] }
+tokio = { version = "1.35.1", features = ["full"] }
+futures = "0.3.30"
+chrono = "0.4.33"
 
 # pulsar
-pulsar = "6.0.1"
-serde = { version = "1.0.183", features = ["derive"] }
-serde_json = "1.0.104"
+pulsar = "6.1.0"
+serde = { version = "1.0.195", features = ["derive"] }
+serde_json = "1.0.111"
 
 #serde yaml for config read
-serde_yaml = "0.9.25"
+serde_yaml = "0.9.30"

@@ -12,7 +12,7 @@ async fn main() -> Result<(), PulsarError> {
 }
 
 #[tokio::test]
-async fn main() -> Result<(), PulsarError> {
+async fn test_message_consumer() -> Result<(), PulsarError> {
     message_consumer().await
 }
 
