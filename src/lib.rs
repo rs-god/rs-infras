@@ -1,8 +1,11 @@
 pub mod config;
+pub mod crypto;
+pub mod logger;
+pub mod metrics;
+pub mod shutdown;
 pub mod xmysql;
 pub mod xpulsar;
 pub mod xredis;
-pub mod crypto;
 
 #[cfg(test)]
 mod tests {

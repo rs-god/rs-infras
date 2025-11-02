@@ -1,7 +1,7 @@
 // import pulsar crate
 use pulsar::{
-    producer, producer::ProducerBuilder, Authentication, ConsumerBuilder, DeserializeMessage,
-    Error as PulsarError, Payload, Pulsar, SerializeMessage, TokioExecutor,
+    Authentication, ConsumerBuilder, DeserializeMessage, Error as PulsarError, Payload, Pulsar,
+    SerializeMessage, TokioExecutor, producer, producer::ProducerBuilder,
 };
 
 use serde::{Deserialize, Serialize};
@@ -14,10 +14,7 @@ pub struct PulsarConf<'a> {
 
 impl<'a> PulsarConf<'a> {
     pub fn new(addr: &'a str) -> Self {
-        Self {
-            addr,
-            token: None,
-        }
+        Self { addr, token: None }
     }
 
     pub fn with_token(mut self, token: &'a str) -> Self {
@@ -89,7 +86,7 @@ mod tests {
     use super::Message;
     use futures::TryStreamExt;
     use pulsar::{
-        message::proto::command_subscribe::SubType, producer, proto, Consumer, Error as PulsarError,
+        Consumer, Error as PulsarError, message::proto::command_subscribe::SubType, producer, proto,
     };
 
     #[tokio::test]

@@ -1,6 +1,6 @@
 use aes::{Aes128, Aes192, Aes256};
-use anyhow::{anyhow, Result};
-use base64::{engine::general_purpose::STANDARD, Engine as _};
+use anyhow::{Result, anyhow};
+use base64::{Engine as _, engine::general_purpose::STANDARD};
 use cbc::cipher::block_padding::Pkcs7;
 use cbc::cipher::{
     BlockCipher, BlockDecrypt, BlockDecryptMut, BlockEncrypt, BlockEncryptMut, KeyInit, KeyIvInit,
@@ -98,7 +98,7 @@ impl Aes256Crypto {
 
 #[cfg(test)]
 mod tests {
-    use super::{generate_random_hex_string, Aes256Crypto};
+    use super::{Aes256Crypto, generate_random_hex_string};
 
     #[test]
     fn test_generate_random_hex_string() {

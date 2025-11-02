@@ -2,39 +2,6 @@ use r2d2::Pool;
 use redis::{self, cluster::ClusterClient};
 use std::time::Duration;
 
-/*
-The &'a str mode is recommended so that with_dsn can pass &str as an argument
-Distinguishing between &str and String applications can be a bit confusing for programmers
-new to Rust.
-optimal the idea is to use apis with type &str whenever possible, because when a string has
-already been allocated somewhere, you only need to reference the word
-The string saves the cost of copying and distributing. Passing &str through a program is
-almost cost-free: it is almost never generated
-Allocating costs and not copying memory.
-Internally, &String is automatically cast to &str because String implements the type mandatory
-feature Deref for type str, which ensures that
-The conversion from &String to &str.
-String slicing is a versatile input parameter,
-This applies not only to actual String slicing references, but also to string references.
-So again: If you need to pass a string to your function, use string slice &str
-A String design is also possible.
-But that would pass ownership of the dsn String to the dsn, or it would be copying cost
-if the dsn argument called clone to copy a string.
- */
-// 推荐使用&'a str方式，这样with_dsn就可以传递&str作为参数
-// 对刚接触 Rust 的程序员来说，辨别&str 和 String 的应用场景会存在一些困惑。最佳的
-// 做法是尽可能使用带有&str 类型的 API，因为当字符串已经分配到某处时，只需引用该字
-// 符串就可以节省复制和分配的成本。在程序中传递&str 几乎是零成本的：它几乎不会产生
-// 分配成本，也不会复制内存。
-// 在内部，&String 会自动被强制转换为&str，因为 String 为 str 类型实现了类型强制性特征 Deref，该特征确保了
-// &String 到&str 的转换。
-// 字符串切片是一个用途广泛的输入型参数，
-// 不仅适用于实际的字符串切片引用，还适用于 String 引用。所以再强调一遍：如果你需要
-// 将一个字符串传递给你的函数，那么请使用字符串切片&str
-//
-// 当然也可采用String设计
-// 但那样就会将dsn String所有权传递给dsn，要么就是dsn参数显示调用clone复制一个string那样是拷贝成本的。
-
 #[derive(Default, Debug)]
 pub struct RedisConf<'a> {
     dsn: &'a str,
@@ -215,28 +182,28 @@ mod tests {
         use redis::AsyncCommands;
 
         let dsn = "redis://:@127.0.0.1:6379/0";
-        let client = RedisConf::builder().with_dsn(dsn).client().unwrap();
+        let client = RedisConf::builder().with_dsn(dsn).client()?;
         let mut con = client.get_multiplexed_async_connection().await?;
-        let _:() = con.set("name", "hello").await?;
-        let _:() = con.set("name2", "world").await?;
+        let _: () = con.set("name", "hello").await?;
+        let _: () = con.set("name2", "world").await?;
 
         // get name
         let name: redis::RedisResult<String> = con.get("name").await;
-        println!("name:{}", name.unwrap());
+        println!("name:{}", name?);
 
         // multi get
-        let res: redis::RedisResult<Vec<String>> = con.mget(&["name", "name2"]).await;
-        println!("res:{:?}", res.unwrap());
+        let res: Vec<String> = con.mget(&["name", "name2"]).await?;
+        println!("res:{:?}", res);
 
         // async cmd mget
-        let res2: redis::RedisResult<Vec<String>> = redis::cmd("mget")
+        let res2: Vec<String> = redis::cmd("mget")
             .arg(&["name", "name2"])
             .query_async(&mut con)
-            .await;
-        println!("res2:{:?}", res2.unwrap());
+            .await?;
+        println!("res2:{:?}", res2);
 
         // async cmd set
-        let _:() = redis::cmd("set")
+        let _: () = redis::cmd("set")
             .arg(&["key2", "abc"])
             .query_async(&mut con)
             .await?;

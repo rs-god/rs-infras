@@ -1,6 +1,6 @@
 use futures::TryStreamExt;
 use pulsar::{
-    message::proto::command_subscribe::SubType, producer, proto, Consumer, Error as PulsarError,
+    Consumer, Error as PulsarError, message::proto::command_subscribe::SubType, producer, proto,
 };
 use rs_infras::xpulsar;
 use rs_infras::xpulsar::Message;
@@ -66,6 +66,11 @@ async fn message_publish() -> Result<(), PulsarError> {
     }
 
     Ok(())
+}
+
+#[tokio::test]
+async fn test_consumer() -> Result<(), PulsarError> {
+    message_consumer().await
 }
 
 async fn message_consumer() -> Result<(), PulsarError> {
