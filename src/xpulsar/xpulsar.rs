@@ -15,7 +15,7 @@ pub struct PulsarConf<'a> {
 impl<'a> PulsarConf<'a> {
     pub fn new(addr: &'a str) -> Self {
         Self {
-            addr: addr,
+            addr,
             token: None,
         }
     }
@@ -132,7 +132,7 @@ mod tests {
             };
             println!("sent msg:{:?}", msg);
             // 发送消息
-            producer.send(msg).await?;
+            producer.send_non_blocking(msg).await?;
 
             counter += 1;
             println!("{} messages", counter);

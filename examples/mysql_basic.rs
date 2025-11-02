@@ -16,7 +16,7 @@ struct Stu {
 async fn main() -> Result<(), sqlx::Error> {
     let dsn = "mysql://root:root123456@localhost/test";
     let mysql_conf = MysqlConf::new(dsn).with_max_connections(10);
-    let pool = mysql_conf.init_pool().await.unwrap();
+    let pool = mysql_conf.init_pool().await?;
     let row: (i64,) = sqlx::query_as("select ?")
         .bind(120i64)
         .fetch_one(&pool)

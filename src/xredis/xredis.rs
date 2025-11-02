@@ -216,9 +216,9 @@ mod tests {
 
         let dsn = "redis://:@127.0.0.1:6379/0";
         let client = RedisConf::builder().with_dsn(dsn).client().unwrap();
-        let mut con = client.get_async_connection().await?;
-        con.set("name", "hello").await?;
-        con.set("name2", "world").await?;
+        let mut con = client.get_multiplexed_async_connection().await?;
+        let _:() = con.set("name", "hello").await?;
+        let _:() = con.set("name2", "world").await?;
 
         // get name
         let name: redis::RedisResult<String> = con.get("name").await;
@@ -236,7 +236,7 @@ mod tests {
         println!("res2:{:?}", res2.unwrap());
 
         // async cmd set
-        redis::cmd("set")
+        let _:() = redis::cmd("set")
             .arg(&["key2", "abc"])
             .query_async(&mut con)
             .await?;

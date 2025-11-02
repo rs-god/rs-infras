@@ -55,7 +55,7 @@ async fn message_publish() -> Result<(), PulsarError> {
         };
         println!("sent msg:{:?}", msg);
         // 发送消息
-        producer.send(msg).await?;
+        producer.send_non_blocking(msg).await?;
 
         counter += 1;
         println!("{} messages", counter);
