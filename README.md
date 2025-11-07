@@ -38,7 +38,6 @@ serde_yaml = "0.9.33"
 
 # crypto
 aes = "0.8.4"
-anyhow = "1.0.100"
 cbc = "0.1.2"
 rand = "0.9.2"
 base64 = "0.22.1"
