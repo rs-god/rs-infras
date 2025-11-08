@@ -1,10 +1,10 @@
 [package]
 name = "rs_infras"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2024"
 authors = ["daheige"]
 description = "rust infras"
-keywords = ["infras", "rs-infras", "mysql","redis","pulsar"]
+keywords = ["infras", "rs-infras", "mysql", "redis", "pulsar"]
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/rs-god/rs-infras"
@@ -14,7 +14,7 @@ documentation = "https://docs.rs/rs-infras/"
 
 [dependencies]
 # redis use tokio async
-redis = { version = "0.32.7", features = ["r2d2", "tokio-comp", "cluster","cluster-async", "json"] }
+redis = { version = "0.32.7", features = ["r2d2", "tokio-comp", "cluster", "cluster-async", "json"] }
 r2d2 = "0.8.10"
 
 sqlx = { version = "0.8.6", features = ["runtime-tokio", "mysql", "chrono", "time"] }
