@@ -1,6 +1,5 @@
 // 引入了chrono::Local模块，主要用于日志记录时间格式的自定义
 use chrono::Local;
-// 引入Write trait，主要用于env_logger自定义日志写入格式
 use env_logger::Target;
 use std::io::Write;
 
